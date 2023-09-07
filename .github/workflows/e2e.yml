@@ -56,7 +56,10 @@ jobs:
 
       - name: Capture Server Logs
         if: "!cancelled()"
-        run: docker-compose logs backend
+        run: |
+          docker ps
+          docker-compose logs backend
+          docker ps
         working-directory: e2e/support/github/
 
 #      - name: Upload Logs as Artifact
