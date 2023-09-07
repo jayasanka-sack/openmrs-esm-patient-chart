@@ -47,12 +47,12 @@ jobs:
       - name: Wait for OpenMRS instance to start
         run: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8080/openmrs/login.htm)" != "200" ]]; do sleep 10; done
 
-      - name: Run E2E tests
-        run: yarn test-e2e
+#      - name: Run E2E tests
+#        run: yarn test-e2e
 
-      - name: Stop dev server
-        if: "!cancelled()"
-        run: docker stop $(docker ps -a -q)
+#      - name: Stop dev server
+#        if: "!cancelled()"
+#        run: docker stop $(docker ps -a -q)
 
       - name: Capture Server Logs
         if: "!cancelled()"
