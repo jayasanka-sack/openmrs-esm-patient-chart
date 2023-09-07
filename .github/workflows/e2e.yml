@@ -58,7 +58,7 @@ jobs:
         if: "!cancelled()"
         run: |
           docker ps
-          docker-compose logs backend
+          docker compose logs backend
           docker ps
         working-directory: e2e/support/github/
 
