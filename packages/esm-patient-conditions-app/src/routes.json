@@ -19,7 +19,7 @@
       "slot": "patient-chart-conditions-dashboard-slot",
       "component": "conditionsDetailedSummary",
       "meta": {
-        "columnSpan": 4
+        "columnSpan": 1
       }
     },
     {

@@ -11,11 +11,6 @@ import { dashboardPath } from '../../constants';
 import styles from './dashboard-view.scss';
 import { launchPatientWorkspace, launchStartVisitPrompt } from '@openmrs/esm-patient-common-lib';
 
-function getColumnsLayoutStyle(dashboard: DashboardConfig) {
-  const numberOfColumns = dashboard.columns ?? 2;
-  return '1fr '.repeat(numberOfColumns).trimEnd();
-}
-
 /**
  * The layout mode dictates the width occuppied by the chart dashboard widgets.
  * - In 'contained' mode, the dashboard widgets are displayed in a centered
@@ -45,7 +40,25 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
   const {
     params: { view },
   } = useMatch(dashboardPath);
-  const gridTemplateColumns = getColumnsLayoutStyle(dashboard);
+  const [gridTemplateColumns, setGridTemplateColumns] = useState<string>('1fr');
+
+  useEffect(() => {
+    const handleColumnsLayoutStyle = () => {
+      const isLargeScreen = window.innerWidth > 1440;
+      let numberOfColumns = dashboard.columns ?? 1;
+      if (isLargeScreen) {
+        numberOfColumns *= 2;
+      }
+      setGridTemplateColumns(`repeat(${numberOfColumns}, minmax(0, 1fr))`);
+    };
+
+    handleColumnsLayoutStyle();
+    window.addEventListener('resize', handleColumnsLayoutStyle);
+
+    return () => {
+      window.removeEventListener('resize', handleColumnsLayoutStyle);
+    };
+  }, [dashboard]);
 
   const state = useMemo(
     () => ({
