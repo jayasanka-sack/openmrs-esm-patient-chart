@@ -45,7 +45,7 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
   useEffect(() => {
     const handleColumnsLayoutStyle = () => {
       const isLargeScreen = window.innerWidth > 1440;
-      let numberOfColumns = dashboard.columns ?? 1;
+      let numberOfColumns = 1;
       if (isLargeScreen) {
         numberOfColumns *= 2;
       }
@@ -74,7 +74,7 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
   const wrapItem = useCallback(
     (slot: ReactNode, extension: ExtensionData) => {
       const { columnSpan = 1 } = widgetMetas[getExtensionNameFromId(extension.extensionId)];
-      return <div style={{ gridColumn: `span ${columnSpan}` }}>{slot}</div>;
+      return <div style={{ gridColumn: `span 1` }}>{slot}</div>;
     },
     [widgetMetas],
   );
@@ -95,14 +95,16 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
     <>
       <ExtensionSlot state={state} name="top-of-all-patient-dashboards-slot" />
       {!dashboard.hideDashboardTitle && resolvedTitle && <h1 className={styles.dashboardTitle}>{resolvedTitle}</h1>}
-      <ExtensionSlot
-        key={dashboard.slot}
-        name={dashboard.slot}
-        className={styles.dashboard}
-        style={{ gridTemplateColumns }}
-      >
-        <Extension state={state}>{wrapItem}</Extension>
-      </ExtensionSlot>
+      <div className={styles.dashboardContainer}>
+        <ExtensionSlot
+          key={dashboard.slot}
+          name={dashboard.slot}
+          className={styles.dashboard}
+          // style={{ gridTemplateColumns }}
+        >
+          <Extension state={state}>{wrapItem}</Extension>
+        </ExtensionSlot>
+      </div>
     </>
   );
 }
