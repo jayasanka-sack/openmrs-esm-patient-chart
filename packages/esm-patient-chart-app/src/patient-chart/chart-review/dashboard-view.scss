@@ -26,6 +26,10 @@
   }
 }
 
+.child:only-child {
+  grid-column: 1 / span 2;
+}
+
 :global(.omrs-breakpoint-lt-desktop) .dashboard {
   grid-template-columns: 1fr;
 }

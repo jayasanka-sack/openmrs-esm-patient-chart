@@ -40,25 +40,6 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
   const {
     params: { view },
   } = useMatch(dashboardPath);
-  const [gridTemplateColumns, setGridTemplateColumns] = useState<string>('1fr');
-
-  useEffect(() => {
-    const handleColumnsLayoutStyle = () => {
-      const isLargeScreen = window.innerWidth > 1440;
-      let numberOfColumns = 1;
-      if (isLargeScreen) {
-        numberOfColumns *= 2;
-      }
-      setGridTemplateColumns(`repeat(${numberOfColumns}, minmax(0, 1fr))`);
-    };
-
-    handleColumnsLayoutStyle();
-    window.addEventListener('resize', handleColumnsLayoutStyle);
-
-    return () => {
-      window.removeEventListener('resize', handleColumnsLayoutStyle);
-    };
-  }, [dashboard]);
 
   const state = useMemo(
     () => ({
@@ -74,7 +55,7 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
   const wrapItem = useCallback(
     (slot: ReactNode, extension: ExtensionData) => {
       const { columnSpan = 1 } = widgetMetas[getExtensionNameFromId(extension.extensionId)];
-      return <div style={{ gridColumn: `span 1` }}>{slot}</div>;
+      return <div>{slot}</div>;
     },
     [widgetMetas],
   );
@@ -96,13 +77,8 @@ export function DashboardView({ dashboard, patientUuid, patient }: DashboardView
       <ExtensionSlot state={state} name="top-of-all-patient-dashboards-slot" />
       {!dashboard.hideDashboardTitle && resolvedTitle && <h1 className={styles.dashboardTitle}>{resolvedTitle}</h1>}
       <div className={styles.dashboardContainer}>
-        <ExtensionSlot
-          key={dashboard.slot}
-          name={dashboard.slot}
-          className={styles.dashboard}
-          // style={{ gridTemplateColumns }}
-        >
-          <Extension state={state}>{wrapItem}</Extension>
+        <ExtensionSlot key={dashboard.slot} name={dashboard.slot} className={styles.dashboard}>
+          <Extension state={state} className={styles.child}></Extension>
         </ExtensionSlot>
       </div>
     </>
