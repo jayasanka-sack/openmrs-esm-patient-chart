@@ -73,10 +73,10 @@ const PaginatedVitals: React.FC<PaginatedVitalsProps> = ({
   const rows = isPrinting ? sortedData : paginatedVitals;
 
   return (
-    <div>
+    <div className={styles.paginatedVitals}>
       <DataTable rows={rows} headers={tableHeaders} size={isTablet ? 'lg' : 'sm'} useZebraStyles>
         {({ rows, headers, getTableProps }) => (
-          <TableContainer>
+          <TableContainer className={styles.tableContainer}>
             <Table className={styles.table} aria-label="vitals" {...getTableProps()}>
               <TableHead>
                 <TableRow>
