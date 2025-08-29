@@ -51,7 +51,11 @@ jobs:
         run: yarn install --immutable
 
       - name: Run release
-        run: yarn release ${{ inputs.release_type }}
+        id: release
+        run: |
+          yarn release ${{ inputs.release_type }}
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create PR with release changes
         id: cpr
@@ -60,18 +64,18 @@ jobs:
           HUSKY: 0
         with:
           # branch name is unique per run
-          branch: "release/${{ inputs.release_type }}-${{ github.run_id }}"
-          commit-message: "chore(release): ${{ inputs.release_type }} version bump"
-          title: "chore(release): ${{ inputs.release_type }} version bump"
+          branch: "release/v${{ steps.release.outputs.version }}-${{ github.run_id }}"
+          commit-message: "chore(release): v${{ steps.release.outputs.version }}"
+          title: "(chore) Release v${{ steps.release.outputs.version }}"
           body: |
             This PR was created automatically via **workflow_dispatch**.
 
-            **Command run**
+            **Command ran**
             ```
             yarn release ${{ inputs.release_type }}
             ```
 
-            Please review the changes (version bumps, changelog, etc.) and merge.
+            Please review the changes (version bumps, changelog, etc.) and merge. :)
           labels: |
             release
             automated-pr
