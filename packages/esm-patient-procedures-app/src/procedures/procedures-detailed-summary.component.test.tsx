@@ -7,7 +7,7 @@ import ProceduresDetailedSummary from './procedures-detailed-summary.component';
 import { mockProceduresResponse } from '__mocks__';
 
 jest.mock('./procedures-action-menu.component', () => ({
-  ProceduresActionMenu: () => <div data-testid="procedures-action-menu" />,
+  ProceduresActionMenu: jest.fn().mockReturnValue(null),
 }));
 
 const mockOpenmrsFetch = jest.mocked(openmrsFetch);
