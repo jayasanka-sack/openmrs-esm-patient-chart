@@ -65,10 +65,13 @@ function ProceduresDetailedSummary({ patient }: ProceduresDetailedSummaryProps) 
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(procedurePageSize);
-  const startIndex = (currentPage - 1) * pageSize;
+  const startIndex = (currentPage - 1) * procedurePageSize;
 
-  const { procedures, totalCount, error, isLoading, isValidating } = useProcedures(patient.id, startIndex, pageSize);
+  const { procedures, totalCount, error, isLoading, isValidating } = useProcedures(
+    patient.id,
+    startIndex,
+    procedurePageSize,
+  );
 
   const headers = useMemo(
     () => [
@@ -199,11 +202,8 @@ function ProceduresDetailedSummary({ patient }: ProceduresDetailedSummaryProps) 
                 currentItems={rows.length}
                 totalItems={totalCount}
                 pageNumber={currentPage}
-                pageSize={pageSize}
-                onPageNumberChange={({ page, pageSize: newPageSize }: { page: number; pageSize: number }) => {
-                  setCurrentPage(page);
-                  setPageSize(newPageSize);
-                }}
+                pageSize={procedurePageSize}
+                onPageNumberChange={({ page }: { page: number }) => setCurrentPage(page)}
               />
             </>
           )}
