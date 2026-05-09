@@ -11,13 +11,6 @@
       "extends": ["plugin:testing-library/react"],
     },
     {
-      "files": ["e2e/**/*.spec.ts"],
-      "extends": ["plugin:playwright/recommended"],
-      "rules": {
-        "testing-library/prefer-screen-queries": "off",
-      },
-    },
-    {
       "files": [
         "**/*.config.js",
         "**/jest.config.js",
