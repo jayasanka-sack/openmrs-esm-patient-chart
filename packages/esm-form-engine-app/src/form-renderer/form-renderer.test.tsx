@@ -23,7 +23,7 @@ describe('FormRenderer', () => {
     patientUuid: mockPatient.id,
     patient: mockPatient,
     closeWorkspace: jest.fn(),
-    closeWorkspaceWithSavedChanges: jest.fn(),
+    closeWorkspaceDiscardingChanges: jest.fn(),
     promptBeforeClosing: jest.fn(),
     setTitle: jest.fn(),
     visitContext: null,

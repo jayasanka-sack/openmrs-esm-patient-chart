@@ -86,7 +86,7 @@ const ConditionsForm: React.FC<PatientWorkspace2DefinitionProps<ConditionFormPro
 
   const onError = () => setIsSubmittingForm(false);
 
-  const closeWorkspaceWithSavedChanges = useCallback(() => {
+  const closeWorkspaceDiscardingChanges = useCallback(() => {
     closeWorkspace({ discardUnsavedChanges: true });
   }, [closeWorkspace]);
 
@@ -95,7 +95,7 @@ const ConditionsForm: React.FC<PatientWorkspace2DefinitionProps<ConditionFormPro
       <FormProvider {...methods}>
         <Form className={styles.form} onSubmit={methods.handleSubmit(onSubmit, onError)}>
           <ConditionsWidget
-            closeWorkspaceWithSavedChanges={closeWorkspaceWithSavedChanges}
+            closeWorkspaceDiscardingChanges={closeWorkspaceDiscardingChanges}
             conditionToEdit={condition}
             isEditing={isEditing}
             isSubmittingForm={isSubmittingForm}

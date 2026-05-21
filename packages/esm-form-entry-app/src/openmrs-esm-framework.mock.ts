@@ -109,5 +109,5 @@ export const validator = <T>(fn: T): T => fn;
 export interface DefaultWorkspaceProps {
   closeWorkspace: (options?: object) => void;
   promptBeforeClosing: (testFcn: () => boolean) => void;
-  closeWorkspaceWithSavedChanges: (options?: object) => void;
+  closeWorkspaceDiscardingChanges: (options?: object) => void;
 }

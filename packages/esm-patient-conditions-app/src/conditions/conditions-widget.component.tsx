@@ -32,7 +32,7 @@ import { type ConditionsFormSchema } from './conditions-form.workspace';
 import styles from './conditions-form.scss';
 
 interface ConditionsWidgetProps {
-  closeWorkspaceWithSavedChanges?: () => void;
+  closeWorkspaceDiscardingChanges?: () => void;
   conditionToEdit?: Condition;
   isEditing?: boolean;
   isSubmittingForm: boolean;
@@ -58,7 +58,7 @@ interface SearchResultsProps {
 }
 
 const ConditionsWidget: React.FC<ConditionsWidgetProps> = ({
-  closeWorkspaceWithSavedChanges,
+  closeWorkspaceDiscardingChanges,
   conditionToEdit,
   isEditing,
   isSubmittingForm,
@@ -137,13 +137,13 @@ const ConditionsWidget: React.FC<ConditionsWidgetProps> = ({
         title: t('conditionSaved', 'Condition saved'),
       });
 
-      closeWorkspaceWithSavedChanges();
+      closeWorkspaceDiscardingChanges();
     } catch (error) {
       setIsSubmittingForm(false);
       setErrorCreating(error);
     }
   }, [
-    closeWorkspaceWithSavedChanges,
+    closeWorkspaceDiscardingChanges,
     getValues,
     mutate,
     patientUuid,
@@ -179,13 +179,13 @@ const ConditionsWidget: React.FC<ConditionsWidgetProps> = ({
         title: t('conditionUpdated', 'Condition updated'),
       });
 
-      closeWorkspaceWithSavedChanges();
+      closeWorkspaceDiscardingChanges();
     } catch (error) {
       setIsSubmittingForm(false);
       setErrorUpdating(error);
     }
   }, [
-    closeWorkspaceWithSavedChanges,
+    closeWorkspaceDiscardingChanges,
     conditionToEdit?.id,
     displayName,
     editableClinicalStatus,

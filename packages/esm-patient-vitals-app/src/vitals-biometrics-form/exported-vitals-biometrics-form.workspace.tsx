@@ -294,7 +294,7 @@ const ExportedVitalsAndBiometricsForm: React.FC<Workspace2DefinitionProps<Vitals
           patientUuid: patientUuid ?? null,
           patient,
           encounterUuid,
-          closeWorkspaceWithSavedChanges: () => {
+          closeWorkspaceDiscardingChanges: () => {
             closeWorkspace({ discardUnsavedChanges: true });
           },
         }}

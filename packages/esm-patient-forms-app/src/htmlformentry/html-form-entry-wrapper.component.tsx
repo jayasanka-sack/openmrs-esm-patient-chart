@@ -3,20 +3,20 @@ import styles from './html-form-entry-wrapper.scss';
 import { InlineLoading } from '@carbon/react';
 
 interface HtmlFormEntryWrapperProps {
-  closeWorkspaceWithSavedChanges: () => void;
+  closeWorkspaceDiscardingChanges: () => void;
   src: string;
 }
 
-const HtmlFormEntryWrapper: React.FC<HtmlFormEntryWrapperProps> = ({ closeWorkspaceWithSavedChanges, src }) => {
+const HtmlFormEntryWrapper: React.FC<HtmlFormEntryWrapperProps> = ({ closeWorkspaceDiscardingChanges, src }) => {
   const iframeRef = useRef<HTMLIFrameElement>();
   const [isIframeLoading, setIsIframeLoading] = useState(true);
 
   // set up a listener to listen for a message from HFE-UI to close the workspace
   useEffect(() => {
-    const callback = (event) => event?.data === 'close-workspace' && closeWorkspaceWithSavedChanges();
+    const callback = (event) => event?.data === 'close-workspace' && closeWorkspaceDiscardingChanges();
     window.addEventListener('message', callback);
     return () => window.removeEventListener('message', callback); // cleanup on unmount
-  }, [closeWorkspaceWithSavedChanges]);
+  }, [closeWorkspaceDiscardingChanges]);
 
   // hide the headers and breadcrumbs of the O2 page on load
   const onLoad = useCallback(() => {

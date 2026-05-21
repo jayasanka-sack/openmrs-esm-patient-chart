@@ -102,7 +102,7 @@ const FormEntry: React.FC<FormEntryProps> = ({
       closeWorkspace: () => {
         return closeWorkspace();
       },
-      closeWorkspaceWithSavedChanges: () => {
+      closeWorkspaceDiscardingChanges: () => {
         // Update current visit data for critical components
         mutateVisitContext?.();
 
@@ -173,7 +173,7 @@ const FormEntry: React.FC<FormEntryProps> = ({
           (isHtmlForm ? (
             <HtmlFormEntryWrapper
               src={htmlFormEntryUrl}
-              closeWorkspaceWithSavedChanges={state.closeWorkspaceWithSavedChanges}
+              closeWorkspaceDiscardingChanges={state.closeWorkspaceDiscardingChanges}
             />
           ) : (
             <ExtensionSlot key={state.formUuid} name="form-widget-slot" state={state} />

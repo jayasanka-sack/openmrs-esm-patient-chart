@@ -16,7 +16,7 @@ import styles from './form-renderer.scss';
 const FormRenderer: React.FC<FormRendererProps> = ({
   additionalProps,
   closeWorkspace,
-  closeWorkspaceWithSavedChanges,
+  closeWorkspaceDiscardingChanges,
   encounterUuid,
   formUuid,
   patientUuid,
@@ -63,14 +63,14 @@ const FormRenderer: React.FC<FormRendererProps> = ({
 
   const handleOnSubmit = useCallback(
     (encounters?: Array<Encounter>) => {
-      if (closeWorkspaceWithSavedChanges) {
-        closeWorkspaceWithSavedChanges();
+      if (closeWorkspaceDiscardingChanges) {
+        closeWorkspaceDiscardingChanges();
       } else {
         closeWorkspace({ closeWindow: true, discardUnsavedChanges: true });
       }
       handlePostResponse?.(encounters[0]);
     },
-    [closeWorkspace, closeWorkspaceWithSavedChanges, handlePostResponse],
+    [closeWorkspace, closeWorkspaceDiscardingChanges, handlePostResponse],
   );
 
   if (isLoading) {
