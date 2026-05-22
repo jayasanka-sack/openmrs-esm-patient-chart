@@ -54,7 +54,7 @@ type ProcedureTableRow = {
 
 const ProceduresDetailedSummary = ({ patient }: ProceduresDetailedSummaryProps) => {
   const { t } = useTranslation();
-  const { detailedViewPaginationSize } = useConfig<ConfigObject>();
+  const { detailedViewPageSize } = useConfig<ConfigObject>();
   const headerTitle = t('procedures', 'Procedures');
   const displayText = t('procedures_lower', 'procedures');
   const layout = useLayoutType();
@@ -65,12 +65,12 @@ const ProceduresDetailedSummary = ({ patient }: ProceduresDetailedSummaryProps) 
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const startIndex = (currentPage - 1) * detailedViewPaginationSize;
+  const startIndex = (currentPage - 1) * detailedViewPageSize;
 
   const { procedures, totalCount, error, isLoading, isValidating } = useProcedures(
     patient.id,
     startIndex,
-    detailedViewPaginationSize,
+    detailedViewPageSize,
   );
 
   const headers = useMemo(
@@ -202,7 +202,7 @@ const ProceduresDetailedSummary = ({ patient }: ProceduresDetailedSummaryProps) 
                 currentItems={rows.length}
                 totalItems={totalCount}
                 pageNumber={currentPage}
-                pageSize={detailedViewPaginationSize}
+                pageSize={detailedViewPageSize}
                 onPageNumberChange={({ page }: { page: number }) => setCurrentPage(page)}
               />
             </>
