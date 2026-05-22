@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Layer, OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import { launchWorkspace2, showModal, useLayoutType } from '@openmrs/esm-framework';
-import styles from './procedures-action-menu.scss';
 import { type Procedure } from '../../types';
+import styles from './procedures-action-menu.scss';
 
 interface ProceduresActionMenuProps {
   procedure: Procedure;
