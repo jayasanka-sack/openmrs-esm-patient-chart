@@ -164,21 +164,8 @@ beforeEach(() => {
   // Re-implement with `invalid` prop (real API) so field-level error text is visible in tests.
   // The default framework mock uses `isInvalid`, which doesn't match what DateTimeField passes.
   mockOpenmrsDatePicker.mockImplementation(
-    ({
-      id,
-      labelText,
-      value,
-      onChange,
-      invalid,
-      invalidText,
-    }: {
-      id?: string;
-      labelText?: React.ReactNode;
-      value?: Date | null;
-      onChange?: (date: Date | null | undefined) => void;
-      invalid?: boolean;
-      invalidText?: string;
-    }) => (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ({ id, labelText, value, onChange, invalid, invalidText }: any) => (
       <>
         <label htmlFor={id}>{labelText}</label>
         <input
