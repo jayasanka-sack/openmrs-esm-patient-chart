@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, within } from '@testing-library/react';
 import { launchWorkspace2, showModal, useLayoutType } from '@openmrs/esm-framework';
 import { mockProceduresResponse } from '__mocks__';
+import { type Procedure } from '../../types';
 import { ProceduresActionMenu } from './procedures-action-menu.component';
 
 const mockLaunchWorkspace2 = vi.mocked(launchWorkspace2);
@@ -17,7 +18,7 @@ vi.mock('@openmrs/esm-framework', async () => ({
   useLayoutType: vi.fn().mockReturnValue('small-desktop'),
 }));
 
-const mockProcedure = mockProceduresResponse.results[0];
+const mockProcedure = mockProceduresResponse.results[0] as Procedure;
 const patientUuid = '8673ee4f-e2ab-4077-ba55-4980f408773e';
 
 const defaultProps = {
