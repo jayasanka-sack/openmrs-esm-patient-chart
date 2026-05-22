@@ -33,11 +33,11 @@ import { ConceptSearchField } from '../../components/concept-search-field/concep
 import { DateTimeField } from '../../components/date-time-field/date-time-field.component';
 import styles from './procedures-form.scss';
 
-interface ProceduresFormComponentProps {
+type ProceduresFormComponentProps = {
   closeWorkspaceWithSavedChanges: () => void;
   procedure?: Procedure;
   patientUuid: string;
-}
+};
 
 const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
   closeWorkspaceWithSavedChanges,

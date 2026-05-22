@@ -5,11 +5,11 @@ import { showSnackbar } from '@openmrs/esm-framework';
 import { deleteProcedure, useMutatePatientProcedures } from '../../procedures.resource';
 import styles from './delete-procedure.modal.scss';
 
-interface DeleteProcedureModalProps {
+type DeleteProcedureModalProps = {
   closeDeleteModal: () => void;
   procedureUuid: string;
   patientUuid: string;
-}
+};
 
 const DeleteProcedureModal: React.FC<DeleteProcedureModalProps> = ({
   closeDeleteModal,

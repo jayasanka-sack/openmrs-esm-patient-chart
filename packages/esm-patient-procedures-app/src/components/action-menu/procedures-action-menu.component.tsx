@@ -5,10 +5,10 @@ import { launchWorkspace2, showModal, useLayoutType } from '@openmrs/esm-framewo
 import { type Procedure } from '../../types';
 import styles from './procedures-action-menu.scss';
 
-interface ProceduresActionMenuProps {
+type ProceduresActionMenuProps = {
   procedure: Procedure;
   patientUuid: string;
-}
+};
 
 export const ProceduresActionMenu = ({ procedure, patientUuid }: ProceduresActionMenuProps) => {
   const { t } = useTranslation();

@@ -6,13 +6,13 @@ import { type ConceptReference } from '../../types';
 import { type useConceptSearchField } from '../../procedures.resource';
 import styles from './concept-search-field.scss';
 
-interface ConceptSearchResultsProps {
+type ConceptSearchResultsProps = {
   isSearching: boolean;
   onSelect: (result: ConceptReference) => void;
   searchResults: Array<ConceptReference>;
   selectedItem: ConceptReference;
   value: string;
-}
+};
 
 export const ConceptSearchField = ({
   label,
