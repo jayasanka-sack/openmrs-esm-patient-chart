@@ -37,7 +37,8 @@ const mockUseProcedureTypes = vi.mocked(useProcedureTypes);
 
 mockUseConfig.mockReturnValue({
   ...getDefaultsFromConfigSchema(configSchema),
-  procedurePageSize: 5,
+  overviewPaginationSize: 5,
+  detailedViewPaginationSize: 10,
   procedureConceptUuid: '',
   procedureConceptSourceType: 'any',
   bodySiteConceptUuid: '',
