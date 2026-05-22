@@ -22,7 +22,7 @@ const defaultProps = {
   onChange: vi.fn(),
 };
 
-describe('<ConceptSearchField />', () => {
+describe('Concept Search Field', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

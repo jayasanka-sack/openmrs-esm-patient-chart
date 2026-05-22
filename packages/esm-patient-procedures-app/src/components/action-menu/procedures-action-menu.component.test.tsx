@@ -36,7 +36,7 @@ async function openMenu(user: ReturnType<typeof userEvent.setup>) {
   return document.getElementById(panelId!);
 }
 
-describe('<ProceduresActionMenu />', () => {
+describe('Procedures Action Menu', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseLayoutType.mockReturnValue('small-desktop');
