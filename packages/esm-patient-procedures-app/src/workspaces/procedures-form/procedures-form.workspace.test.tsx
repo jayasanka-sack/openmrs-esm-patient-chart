@@ -133,27 +133,6 @@ const renderEditForm = () => {
   );
 };
 
-const setupEditConceptFieldMock = () => {
-  mockUseConceptSearchField.mockImplementation((_source, initialValue) => {
-    const initialDisplayName = initialValue ? 'Appendectomy' : '';
-    const [searchTerm, setSearchTerm] = React.useState('');
-    const [displayName, setDisplayName] = React.useState(initialDisplayName);
-    const { searchResults, isSearching } = mockUseConceptSearch(searchTerm, { uuid: '', sourceType: 'any' });
-    return {
-      searchTerm,
-      setSearchTerm,
-      displayName,
-      setDisplayName,
-      searchResults,
-      isSearching,
-      clear: () => {
-        setSearchTerm('');
-        setDisplayName('');
-      },
-    };
-  });
-};
-
 beforeEach(() => {
   mockUseProcedureTypes.mockReturnValue({ procedureTypes: mockProcedureTypes, isLoading: false });
   mockUseConceptSearch.mockReturnValue({ searchResults: [], isSearching: false });
@@ -178,19 +157,13 @@ beforeEach(() => {
   );
   mockUseConceptSearchField.mockImplementation(() => {
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [displayName, setDisplayName] = React.useState('');
     const { searchResults, isSearching } = mockUseConceptSearch(searchTerm, { uuid: '', sourceType: 'any' });
     return {
       searchTerm,
       setSearchTerm,
-      displayName,
-      setDisplayName,
       searchResults,
       isSearching,
-      clear: () => {
-        setSearchTerm('');
-        setDisplayName('');
-      },
+      clear: () => setSearchTerm(''),
     };
   });
 });
@@ -599,7 +572,6 @@ describe('ProceduresForm', () => {
 
   it('pre-populates form fields from an existing procedure in edit mode', () => {
     mockUseConceptSearch.mockReturnValue({ searchResults: searchedProcedure, isSearching: false });
-    setupEditConceptFieldMock();
     renderEditForm();
 
     // Concept search fields show the procedure's coded values
@@ -615,7 +587,6 @@ describe('ProceduresForm', () => {
     const user = userEvent.setup();
     mockUseConceptSearch.mockReturnValue({ searchResults: searchedProcedure, isSearching: false });
     mockUpdateProcedure.mockResolvedValue({ status: 200 } as unknown as FetchResponse);
-    setupEditConceptFieldMock();
 
     renderEditForm();
 
@@ -634,7 +605,6 @@ describe('ProceduresForm', () => {
     const user = userEvent.setup();
     mockUseConceptSearch.mockReturnValue({ searchResults: searchedProcedure, isSearching: false });
     mockUpdateProcedure.mockResolvedValue({ status: 200 } as unknown as FetchResponse);
-    setupEditConceptFieldMock();
 
     renderEditForm();
 

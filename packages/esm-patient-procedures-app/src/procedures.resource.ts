@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { openmrsFetch, restBaseUrl, useDebounce } from '@openmrs/esm-framework';
 import type { ConceptSourceType } from './config-schema';
@@ -92,34 +92,10 @@ export const useConceptById = (uuid: string) => {
   return data?.data ?? null;
 };
 
-export const useConceptSearchField = (source: ConceptSource, initialValue: string) => {
+export const useConceptSearchField = (source: ConceptSource) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [displayName, setDisplayName] = useState('');
-
   const debouncedSearchTerm = useDebounce(searchTerm);
-
   const { searchResults, isSearching } = useConceptSearch(debouncedSearchTerm, source);
-
-  const initialConceptData = useConceptById(initialValue);
-
-  useEffect(() => {
-    if (initialConceptData) {
-      setDisplayName(initialConceptData.display);
-    }
-  }, [initialConceptData]);
-
-  const clear = () => {
-    setSearchTerm('');
-    setDisplayName('');
-  };
-
-  return {
-    searchTerm,
-    setSearchTerm,
-    displayName,
-    setDisplayName,
-    searchResults,
-    isSearching,
-    clear,
-  };
+  const clear = () => setSearchTerm('');
+  return { searchTerm, setSearchTerm, searchResults, isSearching, clear };
 };
