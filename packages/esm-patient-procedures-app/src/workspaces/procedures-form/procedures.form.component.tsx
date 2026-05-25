@@ -348,15 +348,7 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
                   </ResponsiveWrapper>
                 )}
               />
-              {durationUnitOptionsError ? (
-                <InlineNotification
-                  kind="error"
-                  lowContrast
-                  title={t('errorFetchingDurationUnits', 'Error fetching duration units')}
-                  subtitle={durationUnitOptionsError?.message}
-                />
-              ) : (
-                <Controller
+              <Controller
                   name="durationUnit"
                   control={control}
                   render={({ field }) => (
@@ -375,6 +367,10 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
                     </ResponsiveWrapper>
                   )}
                 />
+              {durationUnitOptionsError && (
+                <p className={styles.errorMessage}>
+                  {t('durationUnitOptionsLoadFailed', 'Could not load duration unit options. Please try again.')}
+                </p>
               )}
             </div>
             {errors.duration && <p className={styles.errorMessage}>{errors.duration.message}</p>}
@@ -382,33 +378,29 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
           </FormGroup>
 
           <FormGroup legendText={<RequiredFieldLabel label={t('status', 'Status')} />}>
-            {statusOptionsError ? (
-              <InlineNotification
-                kind="error"
-                lowContrast
-                title={t('errorFetchingStatusOptions', 'Error fetching status options')}
-                subtitle={statusOptionsError?.message}
-              />
-            ) : (
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <ResponsiveWrapper>
-                    <ComboBox
-                      id="status"
-                      titleText=""
-                      placeholder={t('selectStatus', 'Select status')}
-                      items={statusOptions}
-                      itemToString={(item: ConceptReference) => item?.display ?? ''}
-                      selectedItem={statusOptions.find((option) => option.uuid === field.value) ?? null}
-                      onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
-                        field.onChange(selectedItem?.uuid ?? null)
-                      }
-                    />
-                  </ResponsiveWrapper>
-                )}
-              />
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <ResponsiveWrapper>
+                  <ComboBox
+                    id="status"
+                    titleText=""
+                    placeholder={t('selectStatus', 'Select status')}
+                    items={statusOptions}
+                    itemToString={(item: ConceptReference) => item?.display ?? ''}
+                    selectedItem={statusOptions.find((option) => option.uuid === field.value) ?? null}
+                    onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
+                      field.onChange(selectedItem?.uuid ?? null)
+                    }
+                  />
+                </ResponsiveWrapper>
+              )}
+            />
+            {statusOptionsError && (
+              <p className={styles.errorMessage}>
+                {t('statusOptionsLoadFailed', 'Could not load status options. Please try again.')}
+              </p>
             )}
             {errors.status && <p className={styles.errorMessage}>{errors.status.message}</p>}
           </FormGroup>

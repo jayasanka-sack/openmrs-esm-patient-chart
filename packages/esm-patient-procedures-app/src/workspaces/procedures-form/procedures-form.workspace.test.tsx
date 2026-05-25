@@ -793,7 +793,7 @@ describe('ProceduresForm', () => {
 
   // ── Form-level concept fetch errors ──────────────────────────────────────
 
-  it('shows error notifications when status and duration unit option fetches fail', () => {
+  it('shows inline error messages when status and duration unit option fetches fail', () => {
     mockUseConceptSearch.mockReturnValue({
       searchResults: [],
       isSearching: false,
@@ -802,26 +802,26 @@ describe('ProceduresForm', () => {
 
     renderProceduresForm();
 
-    expect(screen.getByText(/error fetching status options/i)).toBeInTheDocument();
-    expect(screen.getByText(/error fetching duration units/i)).toBeInTheDocument();
+    expect(screen.getByText(/could not load status options/i)).toBeInTheDocument();
+    expect(screen.getByText(/could not load duration unit options/i)).toBeInTheDocument();
   });
 
-  it('hides status ComboBox and shows an error notification when status options fail', () => {
+  it('still renders the status ComboBox alongside the error message when status options fail', () => {
     mockUseConceptSearch.mockReturnValue({ searchResults: [], isSearching: false, error: new Error('Network error') });
 
     renderProceduresForm();
 
     const statusGroup = screen.getByRole('group', { name: /^status/i });
-    expect(within(statusGroup).queryByRole('combobox')).not.toBeInTheDocument();
-    expect(screen.getByText(/error fetching status options/i)).toBeInTheDocument();
+    expect(within(statusGroup).getByRole('combobox')).toBeInTheDocument();
+    expect(screen.getByText(/could not load status options/i)).toBeInTheDocument();
   });
 
-  it('hides duration unit ComboBox and shows an error notification when duration unit options fail', () => {
+  it('still renders the duration unit ComboBox alongside the error message when duration unit options fail', () => {
     mockUseConceptSearch.mockReturnValue({ searchResults: [], isSearching: false, error: new Error('Network error') });
 
     renderProceduresForm();
 
-    expect(screen.queryByRole('combobox', { name: /duration unit/i })).not.toBeInTheDocument();
-    expect(screen.getByText(/error fetching duration units/i)).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /duration unit/i })).toBeInTheDocument();
+    expect(screen.getByText(/could not load duration unit options/i)).toBeInTheDocument();
   });
 });
