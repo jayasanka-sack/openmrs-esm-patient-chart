@@ -22,7 +22,7 @@ import {
   useProcedureTypes,
 } from '../../procedures.resource';
 import ProceduresFormWorkspace, { type ProceduresFormProps } from './procedures-form.workspace';
-import type { ConceptReference, Procedure } from '../../types';
+import type { Procedure } from '../../types';
 
 vi.mock('../../procedures.resource', async () => ({
   ...(await vi.importActual('../../procedures.resource')),
@@ -135,22 +135,20 @@ const renderEditForm = () => {
 
 const setupEditConceptFieldMock = () => {
   mockUseConceptSearchField.mockImplementation((_source, initialValue) => {
-    const initialConcept: ConceptReference | null = initialValue
-      ? { uuid: initialValue, display: 'Appendectomy' }
-      : null;
+    const initialDisplayName = initialValue ? 'Appendectomy' : '';
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [selectedConcept, setSelectedConcept] = React.useState<ConceptReference | null>(initialConcept);
+    const [displayName, setDisplayName] = React.useState(initialDisplayName);
     const { searchResults, isSearching } = mockUseConceptSearch(searchTerm, { uuid: '', sourceType: 'any' });
     return {
       searchTerm,
       setSearchTerm,
-      selectedConcept,
-      setSelectedConcept,
+      displayName,
+      setDisplayName,
       searchResults,
       isSearching,
       clear: () => {
         setSearchTerm('');
-        setSelectedConcept(null);
+        setDisplayName('');
       },
     };
   });
@@ -180,18 +178,18 @@ beforeEach(() => {
   );
   mockUseConceptSearchField.mockImplementation(() => {
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [selectedConcept, setSelectedConcept] = React.useState<ConceptReference | null>(null);
+    const [displayName, setDisplayName] = React.useState('');
     const { searchResults, isSearching } = mockUseConceptSearch(searchTerm, { uuid: '', sourceType: 'any' });
     return {
       searchTerm,
       setSearchTerm,
-      selectedConcept,
-      setSelectedConcept,
+      displayName,
+      setDisplayName,
       searchResults,
       isSearching,
       clear: () => {
         setSearchTerm('');
-        setSelectedConcept(null);
+        setDisplayName('');
       },
     };
   });

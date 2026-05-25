@@ -10,7 +10,7 @@ type ConceptSearchResultsProps = {
   isSearching: boolean;
   onSelect: (result: ConceptReference) => void;
   searchResults: Array<ConceptReference>;
-  selectedItem: ConceptReference;
+  hasSelection: boolean;
   value: string;
 };
 
@@ -23,7 +23,7 @@ export const ConceptSearchField = ({
   label: string;
   placeholder: string;
   field: ReturnType<typeof useConceptSearchField>;
-  onChange: (selectedConcept: ConceptReference) => void;
+  onChange: (selectedConcept: ConceptReference | null) => void;
 }) => {
   return (
     <>
@@ -33,20 +33,26 @@ export const ConceptSearchField = ({
           placeholder={placeholder}
           onChange={(e) => {
             field.setSearchTerm(e.target.value);
-            field.setSelectedConcept(null);
+            if (field.displayName) {
+              field.setDisplayName('');
+              onChange(null);
+            }
           }}
-          onClear={field.clear}
-          value={field.selectedConcept ? field.selectedConcept.display : field.searchTerm}
+          onClear={() => {
+            field.clear();
+            onChange(null);
+          }}
+          value={field.displayName || field.searchTerm}
         />
       </ResponsiveWrapper>
 
       <ConceptSearchResults
         isSearching={field.isSearching}
         searchResults={field.searchResults}
-        selectedItem={field.selectedConcept}
+        hasSelection={Boolean(field.displayName)}
         value={field.searchTerm}
         onSelect={(result) => {
-          field.setSelectedConcept(result);
+          field.setDisplayName(result.display);
           field.setSearchTerm('');
           onChange(result);
         }}
@@ -59,12 +65,12 @@ const ConceptSearchResults = ({
   isSearching,
   onSelect,
   searchResults,
-  selectedItem,
+  hasSelection,
   value,
 }: ConceptSearchResultsProps) => {
   const { t } = useTranslation();
 
-  if (!value || selectedItem) {
+  if (!value || hasSelection) {
     return null;
   }
 

@@ -94,7 +94,7 @@ export const useConceptById = (uuid: string) => {
 
 export const useConceptSearchField = (source: ConceptSource, initialValue: string) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedConcept, setSelectedConcept] = useState<ConceptReference | null>(null);
+  const [displayName, setDisplayName] = useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm);
 
@@ -104,20 +104,20 @@ export const useConceptSearchField = (source: ConceptSource, initialValue: strin
 
   useEffect(() => {
     if (initialConceptData) {
-      setSelectedConcept(initialConceptData);
+      setDisplayName(initialConceptData.display);
     }
   }, [initialConceptData]);
 
   const clear = () => {
     setSearchTerm('');
-    setSelectedConcept(null);
+    setDisplayName('');
   };
 
   return {
     searchTerm,
     setSearchTerm,
-    selectedConcept,
-    setSelectedConcept,
+    displayName,
+    setDisplayName,
     searchResults,
     isSearching,
     clear,
