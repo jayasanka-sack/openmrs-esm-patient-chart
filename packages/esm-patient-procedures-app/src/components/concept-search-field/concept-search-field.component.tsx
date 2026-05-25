@@ -10,7 +10,7 @@ type ConceptSearchResultsProps = {
   isSearching: boolean;
   onSelect: (result: ConceptReference) => void;
   searchResults: Array<ConceptReference>;
-  selectedItem: boolean;
+  hasSelection: boolean;
   value: string;
 };
 
@@ -50,7 +50,7 @@ export const ConceptSearchField = ({
       <ConceptSearchResults
         isSearching={field.isSearching}
         searchResults={field.searchResults}
-        selectedItem={Boolean(selectedConcept)}
+        hasSelection={Boolean(selectedConcept)}
         value={field.searchTerm}
         onSelect={(result) => {
           field.setSearchTerm('');
@@ -65,12 +65,12 @@ const ConceptSearchResults = ({
   isSearching,
   onSelect,
   searchResults,
-  selectedItem,
+  hasSelection,
   value,
 }: ConceptSearchResultsProps) => {
   const { t } = useTranslation();
 
-  if (!value || selectedItem) {
+  if (!value || hasSelection) {
     return null;
   }
 
