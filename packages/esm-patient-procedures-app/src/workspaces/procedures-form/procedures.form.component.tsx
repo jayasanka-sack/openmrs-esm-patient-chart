@@ -349,24 +349,24 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
                 )}
               />
               <Controller
-                  name="durationUnit"
-                  control={control}
-                  render={({ field }) => (
-                    <ResponsiveWrapper>
-                      <ComboBox
-                        id="durationUnit"
-                        titleText={t('durationUnit', 'Duration unit')}
-                        placeholder={t('selectDurationUnit', 'Select unit')}
-                        items={durationUnitOptions}
-                        itemToString={(item: ConceptReference) => item?.display ?? ''}
-                        selectedItem={durationUnitOptions.find((option) => option.uuid === field.value) ?? null}
-                        onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
-                          field.onChange(selectedItem?.uuid ?? null)
-                        }
-                      />
-                    </ResponsiveWrapper>
-                  )}
-                />
+                name="durationUnit"
+                control={control}
+                render={({ field }) => (
+                  <ResponsiveWrapper>
+                    <ComboBox
+                      id="durationUnit"
+                      titleText={t('durationUnit', 'Duration unit')}
+                      placeholder={t('selectDurationUnit', 'Select unit')}
+                      items={durationUnitOptions}
+                      itemToString={(item: ConceptReference) => item?.display ?? ''}
+                      selectedItem={durationUnitOptions.find((option) => option.uuid === field.value) ?? null}
+                      onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
+                        field.onChange(selectedItem?.uuid ?? null)
+                      }
+                    />
+                  </ResponsiveWrapper>
+                )}
+              />
               {durationUnitOptionsError && (
                 <p className={styles.errorMessage}>
                   {t('durationUnitOptionsLoadFailed', 'Could not load duration unit options. Please try again.')}
