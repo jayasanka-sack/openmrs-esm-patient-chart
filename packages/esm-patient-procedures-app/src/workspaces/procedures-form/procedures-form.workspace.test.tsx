@@ -790,4 +790,38 @@ describe('ProceduresForm', () => {
 
     expect(mockSaveProcedure).not.toHaveBeenCalled();
   });
+
+  // ── Form-level concept fetch errors ──────────────────────────────────────
+
+  it('shows error notifications when status and duration unit option fetches fail', () => {
+    mockUseConceptSearch.mockReturnValue({
+      searchResults: [],
+      isSearching: false,
+      error: new Error('Concept fetch failed'),
+    });
+
+    renderProceduresForm();
+
+    expect(screen.getByText(/error fetching status options/i)).toBeInTheDocument();
+    expect(screen.getByText(/error fetching duration units/i)).toBeInTheDocument();
+  });
+
+  it('hides status ComboBox and shows an error notification when status options fail', () => {
+    mockUseConceptSearch.mockReturnValue({ searchResults: [], isSearching: false, error: new Error('Network error') });
+
+    renderProceduresForm();
+
+    const statusGroup = screen.getByRole('group', { name: /^status/i });
+    expect(within(statusGroup).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(screen.getByText(/error fetching status options/i)).toBeInTheDocument();
+  });
+
+  it('hides duration unit ComboBox and shows an error notification when duration unit options fail', () => {
+    mockUseConceptSearch.mockReturnValue({ searchResults: [], isSearching: false, error: new Error('Network error') });
+
+    renderProceduresForm();
+
+    expect(screen.queryByRole('combobox', { name: /duration unit/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/error fetching duration units/i)).toBeInTheDocument();
+  });
 });

@@ -86,12 +86,6 @@ export const deleteProcedure = async (procedureId: string) => {
   });
 };
 
-export const useConceptById = (uuid: string) => {
-  const url = uuid ? `${restBaseUrl}/concept/${uuid}?v=custom:(uuid,display)` : null;
-  const { data, error, isLoading } = useSWR<{ data: ConceptReference }, Error>(url, openmrsFetch);
-  return { concept: data?.data ?? null, isLoading, error };
-};
-
 export const useConceptSearchField = (source: ConceptSource) => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm);
