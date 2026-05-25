@@ -11,7 +11,7 @@ type ConceptSearchResultsProps = {
   onSelect: (result: ConceptReference) => void;
   searchResults: Array<ConceptReference>;
   hasSelection: boolean;
-  value: string;
+  searchTerm: string;
 };
 
 export const ConceptSearchField = ({
@@ -51,7 +51,7 @@ export const ConceptSearchField = ({
         isSearching={field.isSearching}
         searchResults={field.searchResults}
         hasSelection={Boolean(selectedConcept)}
-        value={field.searchTerm}
+        searchTerm={field.searchTerm}
         onSelect={(result) => {
           field.setSearchTerm('');
           onChange(result);
@@ -66,11 +66,11 @@ const ConceptSearchResults = ({
   onSelect,
   searchResults,
   hasSelection,
-  value,
+  searchTerm,
 }: ConceptSearchResultsProps) => {
   const { t } = useTranslation();
 
-  if (!value || hasSelection) {
+  if (!searchTerm || hasSelection) {
     return null;
   }
 
@@ -107,7 +107,7 @@ const ConceptSearchResults = ({
     <Layer>
       <Tile className={styles.emptyResults}>
         <span>
-          {t('noResultsFor', 'No results for')} <strong>"{value}"</strong>
+          {t('noResultsFor', 'No results for')} <strong>"{searchTerm}"</strong>
         </span>
       </Tile>
     </Layer>
