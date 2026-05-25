@@ -10,7 +10,7 @@ type ConceptSearchResultsProps = {
   isSearching: boolean;
   onSelect: (result: ConceptReference) => void;
   searchResults: Array<ConceptReference>;
-  selectedItem: ConceptReference | null;
+  selectedItem: boolean;
   value: string;
 };
 
@@ -50,7 +50,7 @@ export const ConceptSearchField = ({
       <ConceptSearchResults
         isSearching={field.isSearching}
         searchResults={field.searchResults}
-        selectedItem={selectedConcept}
+        selectedItem={Boolean(selectedConcept)}
         value={field.searchTerm}
         onSelect={(result) => {
           field.setSearchTerm('');
