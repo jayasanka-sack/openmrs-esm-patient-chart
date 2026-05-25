@@ -119,12 +119,12 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
   const [bodySiteConcept, setBodySiteConcept] = useState<ConceptReference | null>(
     procedure?.bodySite?.uuid ? procedure.bodySite : null,
   );
-  const { searchResults: statusOptions } = useConceptSearch('', {
+  const { searchResults: statusOptions, error: statusOptionsError } = useConceptSearch('', {
     uuid: statusConceptUuid,
     sourceType: statusConceptSourceType,
   });
 
-  const { searchResults: durationUnitOptions } = useConceptSearch('', {
+  const { searchResults: durationUnitOptions, error: durationUnitOptionsError } = useConceptSearch('', {
     uuid: durationUnitConceptUuid,
     sourceType: durationUnitConceptSourceType,
   });
@@ -348,18 +348,60 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
                   </ResponsiveWrapper>
                 )}
               />
+              {durationUnitOptionsError ? (
+                <InlineNotification
+                  kind="error"
+                  lowContrast
+                  title={t('errorFetchingDurationUnits', 'Error fetching duration units')}
+                  subtitle={durationUnitOptionsError?.message}
+                />
+              ) : (
+                <Controller
+                  name="durationUnit"
+                  control={control}
+                  render={({ field }) => (
+                    <ResponsiveWrapper>
+                      <ComboBox
+                        id="durationUnit"
+                        titleText={t('durationUnit', 'Duration unit')}
+                        placeholder={t('selectDurationUnit', 'Select unit')}
+                        items={durationUnitOptions}
+                        itemToString={(item: ConceptReference) => item?.display ?? ''}
+                        selectedItem={durationUnitOptions.find((option) => option.uuid === field.value) ?? null}
+                        onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
+                          field.onChange(selectedItem?.uuid ?? null)
+                        }
+                      />
+                    </ResponsiveWrapper>
+                  )}
+                />
+              )}
+            </div>
+            {errors.duration && <p className={styles.errorMessage}>{errors.duration.message}</p>}
+            {errors.durationUnit && <p className={styles.errorMessage}>{errors.durationUnit.message}</p>}
+          </FormGroup>
+
+          <FormGroup legendText={<RequiredFieldLabel label={t('status', 'Status')} />}>
+            {statusOptionsError ? (
+              <InlineNotification
+                kind="error"
+                lowContrast
+                title={t('errorFetchingStatusOptions', 'Error fetching status options')}
+                subtitle={statusOptionsError?.message}
+              />
+            ) : (
               <Controller
-                name="durationUnit"
+                name="status"
                 control={control}
                 render={({ field }) => (
                   <ResponsiveWrapper>
                     <ComboBox
-                      id="durationUnit"
-                      titleText={t('durationUnit', 'Duration unit')}
-                      placeholder={t('selectDurationUnit', 'Select unit')}
-                      items={durationUnitOptions}
+                      id="status"
+                      titleText=""
+                      placeholder={t('selectStatus', 'Select status')}
+                      items={statusOptions}
                       itemToString={(item: ConceptReference) => item?.display ?? ''}
-                      selectedItem={durationUnitOptions.find((option) => option.uuid === field.value) ?? null}
+                      selectedItem={statusOptions.find((option) => option.uuid === field.value) ?? null}
                       onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
                         field.onChange(selectedItem?.uuid ?? null)
                       }
@@ -367,31 +409,7 @@ const ProceduresFormComponent: React.FC<ProceduresFormComponentProps> = ({
                   </ResponsiveWrapper>
                 )}
               />
-            </div>
-            {errors.duration && <p className={styles.errorMessage}>{errors.duration.message}</p>}
-            {errors.durationUnit && <p className={styles.errorMessage}>{errors.durationUnit.message}</p>}
-          </FormGroup>
-
-          <FormGroup legendText={<RequiredFieldLabel label={t('status', 'Status')} />}>
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <ResponsiveWrapper>
-                  <ComboBox
-                    id="status"
-                    titleText=""
-                    placeholder={t('selectStatus', 'Select status')}
-                    items={statusOptions}
-                    itemToString={(item: ConceptReference) => item?.display ?? ''}
-                    selectedItem={statusOptions.find((option) => option.uuid === field.value) ?? null}
-                    onChange={({ selectedItem }: { selectedItem: ConceptReference | null }) =>
-                      field.onChange(selectedItem?.uuid ?? null)
-                    }
-                  />
-                </ResponsiveWrapper>
-              )}
-            />
+            )}
             {errors.status && <p className={styles.errorMessage}>{errors.status.message}</p>}
           </FormGroup>
 
