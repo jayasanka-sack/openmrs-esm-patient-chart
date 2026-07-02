@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, InlineLoading, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
+import { Button, InlineLoading, ModalBody, ModalFooter, ModalHeader, TextArea } from '@carbon/react';
 import { showSnackbar } from '@openmrs/esm-framework';
 import { deleteProcedure, useMutatePatientProcedures } from '../../procedures.resource';
 import styles from './delete-procedure.modal.scss';
@@ -20,12 +20,13 @@ const DeleteProcedureModal: React.FC<DeleteProcedureModalProps> = ({
   const mutate = useMutatePatientProcedures(patientUuid);
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [voidReason, setVoidReason] = useState('');
 
   const handleDelete = useCallback(async () => {
     setIsDeleting(true);
 
     try {
-      await deleteProcedure(procedureUuid);
+      await deleteProcedure(procedureUuid, voidReason);
       await mutate();
 
       closeDeleteModal();
@@ -45,13 +46,23 @@ const DeleteProcedureModal: React.FC<DeleteProcedureModalProps> = ({
         subtitle: error?.message,
       });
     }
-  }, [closeDeleteModal, procedureUuid, mutate, t]);
+  }, [closeDeleteModal, procedureUuid, voidReason, mutate, t]);
 
   return (
     <div>
       <ModalHeader closeModal={closeDeleteModal} title={t('deleteProcedure', 'Delete procedure')} />
       <ModalBody>
-        <p>{t('deleteModalConfirmationText', 'Are you sure you want to delete this procedure?')}</p>
+        <p className={styles.confirmationText}>
+          {t('deleteModalConfirmationText', 'Are you sure you want to delete this procedure?')}
+        </p>
+        <TextArea
+          id="voidReason"
+          labelText={t('reasonForDeletion', 'Reason for deletion (optional)')}
+          placeholder={t('enterReasonForDeletion', 'Enter a reason for deleting this procedure')}
+          value={voidReason}
+          onChange={(event) => setVoidReason(event.target.value)}
+          rows={3}
+        />
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={closeDeleteModal}>

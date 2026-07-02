@@ -28,6 +28,7 @@ describe('<DeleteProcedureModal />', () => {
 
     expect(screen.getByRole('heading', { name: /delete procedure/i })).toBeInTheDocument();
     expect(screen.getByText(/are you sure you want to delete this procedure/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /reason for deletion \(optional\)/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument();
@@ -43,7 +44,7 @@ describe('<DeleteProcedureModal />', () => {
     expect(defaultProps.closeDeleteModal).toHaveBeenCalled();
   });
 
-  it('clicking the Delete button deletes the procedure', async () => {
+  it('clicking the Delete button deletes the procedure without a reason when none is entered', async () => {
     const user = userEvent.setup();
     mockDeleteProcedure.mockResolvedValue({ status: 200, data: {} } as unknown as FetchResponse);
 
@@ -53,13 +54,29 @@ describe('<DeleteProcedureModal />', () => {
     await user.click(deleteButton);
 
     expect(mockDeleteProcedure).toHaveBeenCalledTimes(1);
-    expect(mockDeleteProcedure).toHaveBeenCalledWith(defaultProps.procedureUuid);
+    expect(mockDeleteProcedure).toHaveBeenCalledWith(defaultProps.procedureUuid, '');
     expect(mockShowSnackbar).toHaveBeenCalledTimes(1);
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       isLowContrast: true,
       kind: 'success',
       title: 'Procedure deleted',
     });
+  });
+
+  it('forwards the void reason entered by the user to deleteProcedure', async () => {
+    const user = userEvent.setup();
+    mockDeleteProcedure.mockResolvedValue({ status: 200, data: {} } as unknown as FetchResponse);
+
+    render(<DeleteProcedureModal {...defaultProps} />);
+
+    const reasonInput = screen.getByRole('textbox', { name: /reason for deletion \(optional\)/i });
+    await user.type(reasonInput, 'Entered in error');
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    await user.click(deleteButton);
+
+    expect(mockDeleteProcedure).toHaveBeenCalledTimes(1);
+    expect(mockDeleteProcedure).toHaveBeenCalledWith(defaultProps.procedureUuid, 'Entered in error');
   });
 
   it('renders an error message if the delete operation fails', async () => {
@@ -74,7 +91,7 @@ describe('<DeleteProcedureModal />', () => {
     await user.click(deleteButton);
 
     expect(mockDeleteProcedure).toHaveBeenCalledTimes(1);
-    expect(mockDeleteProcedure).toHaveBeenCalledWith(defaultProps.procedureUuid);
+    expect(mockDeleteProcedure).toHaveBeenCalledWith(defaultProps.procedureUuid, '');
     expect(mockShowSnackbar).toHaveBeenCalledTimes(1);
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       isLowContrast: false,

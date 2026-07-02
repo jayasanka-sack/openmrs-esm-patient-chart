@@ -80,8 +80,12 @@ export const useProcedures = (patientUuid: string, startIndex = 0, limit = 100) 
   };
 };
 
-export const deleteProcedure = async (procedureId: string) => {
-  return await openmrsFetch(`${restBaseUrl}/procedure/${procedureId}`, {
+export const deleteProcedure = async (procedureId: string, voidReason?: string) => {
+  const trimmedReason = voidReason?.trim();
+  const url = trimmedReason
+    ? `${restBaseUrl}/procedure/${procedureId}?reason=${encodeURIComponent(trimmedReason)}`
+    : `${restBaseUrl}/procedure/${procedureId}`;
+  return await openmrsFetch(url, {
     method: 'DELETE',
   });
 };
